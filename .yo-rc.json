@@ -1,0 +1,33 @@
+{
+    "generator-jhipster": {
+        "promptValues": {
+            "packageName": "com"
+        },
+        "jhipsterVersion": "5.7.2",
+        "applicationType": "monolith",
+        "baseName": "NewAppli",
+        "packageName": "com",
+        "packageFolder": "com",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "cacheProvider": "ehcache",
+        "enableHibernateCache": false,
+        "websocket": false,
+        "databaseType": "sql",
+        "devDatabaseType": "h2Disk",
+        "prodDatabaseType": "mysql",
+        "searchEngine": "elasticsearch",
+        "messageBroker": false,
+        "serviceDiscoveryType": false,
+        "buildTool": "maven",
+        "enableSwaggerCodegen": false,
+        "jwtSecretKey": "YjgwYjJkYTc4YmNiMDY5NDIyNjM2ZjFiYjJjYmU2YTc2MjI5N2I3NWM2ODU0NmNlOWEwNGEyZDMyNzAxNGJmZjdkYmJkMDQxMGNmZDBiNDBkMmMwMzFhZTBmMGUwMzRjM2Y3MjRiYzA0MThjMDY3OWRiZDEzZjJkYTEzYzRjMzY=",
+        "clientFramework": "angularX",
+        "useSass": false,
+        "clientPackageManager": "npm",
+        "testFrameworks": ["gatling"],
+        "jhiPrefix": "jhi",
+        "otherModules": [],
+        "enableTranslation": false
+    }
+}
