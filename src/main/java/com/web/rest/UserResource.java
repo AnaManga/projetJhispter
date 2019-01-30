@@ -166,6 +166,7 @@ public class UserResource {
         return userService.getAuthorities();
     }
 
+
     /**
      * GET /users/:login : get the "login" user.
      *

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { HttpResponse } from '@angular/common/http';
 import { User, UserService } from 'app/core';
+import { GroupService } from 'app/entities/group/group.service';
+import { IGroup, Group } from 'app/shared/model/group.model';
 
 @Component({
     selector: 'jhi-user-mgmt-update',
@@ -11,9 +13,15 @@ export class UserMgmtUpdateComponent implements OnInit {
     user: User;
     languages: any[];
     authorities: any[];
+    groups: IGroup[];
     isSaving: boolean;
 
-    constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
+    constructor(
+        private userService: UserService,
+        private groupService: GroupService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this.isSaving = false;
@@ -23,6 +31,11 @@ export class UserMgmtUpdateComponent implements OnInit {
         this.authorities = [];
         this.userService.authorities().subscribe(authorities => {
             this.authorities = authorities;
+        });
+
+        this.groupService.query().subscribe((res: HttpResponse<IGroup[]>) => {
+            this.groups = res.body;
+            //console.log(this.groups);
         });
     }
 
@@ -34,6 +47,7 @@ export class UserMgmtUpdateComponent implements OnInit {
         this.isSaving = true;
         if (this.user.id !== null) {
             this.userService.update(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
+            console.log(this.user);
         } else {
             this.user.langKey = 'en';
             this.userService.create(this.user).subscribe(response => this.onSaveSuccess(response), () => this.onSaveError());
@@ -48,4 +62,10 @@ export class UserMgmtUpdateComponent implements OnInit {
     private onSaveError() {
         this.isSaving = false;
     }
+
+    /*
+    trackGroupById(index: number, item: IGroup) {
+        return item;
+    }
+*/
 }

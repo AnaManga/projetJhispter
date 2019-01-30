@@ -2,6 +2,7 @@ package com.domain;
 
 import com.config.Constants;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -92,6 +93,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group groups;
 
     public Long getId() {
         return id;
@@ -196,6 +202,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Group getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Group groups) {
+        this.groups = groups;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.service.dto;
 import com.config.Constants;
 
 import com.domain.Authority;
+import com.domain.Group;
 import com.domain.User;
 
 import javax.validation.constraints.Email;
@@ -53,6 +54,9 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private Group groups;
+
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -73,6 +77,7 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+        this.groups = user.getGroups();
     }
 
     public Long getId() {
@@ -179,6 +184,14 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
+    public Group getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Group groups) {
+        this.groups = groups;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -194,6 +207,7 @@ public class UserDTO {
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
+            ", groups=" + groups +
             "}";
     }
 }

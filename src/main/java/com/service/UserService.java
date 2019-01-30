@@ -2,8 +2,10 @@ package com.service;
 
 import com.config.Constants;
 import com.domain.Authority;
+import com.domain.Group;
 import com.domain.User;
 import com.repository.AuthorityRepository;
+import com.repository.GroupRepository;
 import com.repository.UserRepository;
 import com.repository.search.UserSearchRepository;
 import com.security.AuthoritiesConstants;
@@ -38,6 +40,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final GroupRepository groupRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final UserSearchRepository userSearchRepository;
@@ -46,8 +50,9 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, GroupRepository groupRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
         this.userRepository = userRepository;
+        this.groupRepository = groupRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
@@ -122,6 +127,7 @@ public class UserService {
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
+        newUser.setGroups(userDTO.getGroups());
         userRepository.save(newUser);
         userSearchRepository.save(newUser);
         this.clearUserCaches(newUser);
@@ -164,6 +170,7 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+        user.setGroups(userDTO.getGroups());
         userRepository.save(user);
         userSearchRepository.save(user);
         this.clearUserCaches(user);
@@ -179,8 +186,9 @@ public class UserService {
      * @param email email id of user
      * @param langKey language key
      * @param imageUrl image URL of user
+     * @param groups image URL of user
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl, Group groups) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -189,6 +197,7 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
+                user.setGroups(groups);
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
@@ -222,6 +231,7 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
+                user.setGroups(userDTO.getGroups());
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
@@ -256,7 +266,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+        //return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+        return userRepository.findAll(pageable).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
