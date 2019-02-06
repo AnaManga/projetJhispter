@@ -1,6 +1,7 @@
 package com.web.rest.vm;
 
 import com.service.dto.UserDTO;
+import org.springframework.data.elasticsearch.annotations.Mapping;
 
 import java.util.Set;
 
@@ -61,6 +62,11 @@ public class UserVM extends UserDTO {
     @Override
     public String toString() {
         return "UserVM{" +
-            "} " + super.toString();
+            "id= " + id +
+            ", login='" + login + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            '}';
+
     }
 }

@@ -4,7 +4,9 @@ import com.domain.Authority;
 import com.domain.User;
 import com.service.dto.UserDTO;
 
+import com.web.rest.vm.UserVM;
 import org.springframework.stereotype.Service;
+import springfox.documentation.swagger2.mappers.ModelMapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,9 +27,18 @@ public class UserMapper {
             .collect(Collectors.toList());
     }
 
+    /*
+    public List<UserVM> mapperUserVM() {
+        // mapper UserVM
+    }
+
+    */
+
     public UserDTO userToUserDTO(User user) {
         return new UserDTO(user);
     }
+
+    //public UserVM userDTOToUserVM(UserDTO userDTO) { return new UserVM(userDTO);}
 
     public List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
         return userDTOs.stream()

@@ -1,6 +1,7 @@
 package com.service.dto;
 
 import com.domain.User;
+import com.web.rest.vm.UserVM;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -17,6 +18,8 @@ public class GroupDTO implements Serializable {
     @NotNull
     private String nom;
 
+    private UserVM userVM = new UserVM();
+
     public Long getId() {
         return id;
     }
@@ -31,6 +34,14 @@ public class GroupDTO implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public UserVM getUserVM() {
+        return userVM;
+    }
+
+    public void setUserVM(UserVM userVM) {
+        this.userVM = userVM;
     }
 
     @Override
@@ -57,8 +68,9 @@ public class GroupDTO implements Serializable {
     @Override
     public String toString() {
         return "GroupDTO{" +
-            "id=" + getId() +
-            ", nom='" + getNom() + "'" +
-            "}";
+            "id=" + id +
+            ", nom='" + nom + '\'' +
+            ", userVM=" + userVM +
+            '}';
     }
 }
