@@ -62,10 +62,4 @@ export class UserMgmtUpdateComponent implements OnInit {
     private onSaveError() {
         this.isSaving = false;
     }
-
-    /*
-    trackGroupById(index: number, item: IGroup) {
-        return item;
-    }
-*/
 }

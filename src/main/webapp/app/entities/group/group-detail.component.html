@@ -10,6 +10,13 @@
                     <span>{{group.nom}}</span>
                 </dd>
 
+                <dt><span>Rôles</span></dt>
+                <dd>
+                    <div *ngFor="let authority of group.authorities">
+                        <span class="badge badge-info">{{authority.name}}</span>
+                    </div>
+                </dd>
+
             </dl>
 
             <button type="submit"

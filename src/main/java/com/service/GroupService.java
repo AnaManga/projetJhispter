@@ -1,6 +1,8 @@
 package com.service;
 
+import com.domain.Authority;
 import com.domain.Group;
+import com.repository.AuthorityRepository;
 import com.repository.GroupRepository;
 import com.repository.search.GroupSearchRepository;
 import com.service.dto.GroupDTO;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -33,10 +36,13 @@ public class GroupService {
 
     private final GroupSearchRepository groupSearchRepository;
 
-    public GroupService(GroupRepository groupRepository, GroupMapper groupMapper, GroupSearchRepository groupSearchRepository) {
+    private final AuthorityRepository authorityRepository;
+
+    public GroupService(GroupRepository groupRepository, GroupMapper groupMapper, GroupSearchRepository groupSearchRepository, AuthorityRepository authorityRepository) {
         this.groupRepository = groupRepository;
         this.groupMapper = groupMapper;
         this.groupSearchRepository = groupSearchRepository;
+        this.authorityRepository = authorityRepository;
     }
 
     /**
@@ -106,13 +112,12 @@ public class GroupService {
         return groupSearchRepository.search(queryStringQuery(query), pageable)
             .map(groupMapper::toDto);
     }
-    /*
-    @Transactional(readOnly = true)
-    public List<Group> findByUsers() {
-        log.debug("Request to get Group : {}");
-        return groupRepository.findByUsers_groupIsCurrentUser();
+    /**
+     * @return a list of all the authorities
+     */
+    public List<String> getAuthorities() {
+        return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
-    */
 
 
 }

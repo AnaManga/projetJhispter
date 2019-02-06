@@ -6,10 +6,13 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Group.
@@ -28,6 +31,16 @@ public class Group implements Serializable {
     @NotNull
     @Column(name = "nom", nullable = false)
     private String nom;
+
+    @ManyToMany
+    @JoinTable(
+        name= "jhi_group_authority",
+        joinColumns = {@JoinColumn(name = "group_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")}
+    )
+
+    @BatchSize(size = 20)
+    private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "groups")
 
@@ -52,6 +65,14 @@ public class Group implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

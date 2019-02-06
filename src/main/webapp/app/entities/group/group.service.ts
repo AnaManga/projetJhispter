@@ -41,4 +41,8 @@ export class GroupService {
         const options = createRequestOption(req);
         return this.http.get<IGroup[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
     }
+
+    authorities(): Observable<string[]> {
+        return this.http.get<string[]>(SERVER_API_URL + 'api/groups/authorities');
+    }
 }

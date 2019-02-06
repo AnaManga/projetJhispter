@@ -22,12 +22,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" for="field_users_group">Users Group</label>
-                    <select class="form-control" id="field_users_group" name="users_group" [(ngModel)]="group.users_groupId" >
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+                    <label>Profiles</label>
+                    <select class="form-control" multiple name="authority" [(ngModel)]="group.authorities">
+                        <option *ngFor="let authority of authorities" [value]="authority">{{authority.name}}</option>
                     </select>
                 </div>
+
+
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

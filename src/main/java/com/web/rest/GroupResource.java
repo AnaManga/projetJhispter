@@ -1,6 +1,7 @@
 package com.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.security.AuthoritiesConstants;
 import com.service.GroupService;
 import com.web.rest.errors.BadRequestAlertException;
 import com.web.rest.util.HeaderUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -98,6 +100,16 @@ public class GroupResource {
         Page<GroupDTO> page = groupService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/groups");
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * @return a string list of the all of the roles
+     */
+    @GetMapping("/groups/authorities")
+    @Timed
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public List<String> getAuthorities() {
+        return groupService.getAuthorities();
     }
 
     /**

@@ -15,7 +15,7 @@ import { IUser, UserService } from 'app/core';
 export class GroupUpdateComponent implements OnInit {
     group: IGroup;
     isSaving: boolean;
-
+    authorities: any[];
     users: IUser[];
 
     constructor(
@@ -30,12 +30,18 @@ export class GroupUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ group }) => {
             this.group = group;
         });
+        /*
         this.userService.query().subscribe(
             (res: HttpResponse<IUser[]>) => {
                 this.users = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+        */
+        this.authorities = [];
+        this.groupService.authorities().subscribe(authorities => {
+            this.authorities = authorities;
+        });
     }
 
     previousState() {

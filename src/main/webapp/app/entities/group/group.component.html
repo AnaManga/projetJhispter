@@ -31,6 +31,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="nom"><span>Nom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th><span>Profiles</span></th>
             <th></th>
             </tr>
             </thead>
@@ -38,6 +39,12 @@
             <tr *ngFor="let group of groups ;trackBy: trackId">
                 <td><a [routerLink]="['/group', group.id, 'view' ]">{{group.id}}</a></td>
                 <td>{{group.nom}}</td>
+
+                <td>
+                    <div *ngFor="let authority of group.authorities">
+                        <span class="badge badge-info">{{ authority.name }}</span>
+                    </div>
+                </td>
 
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

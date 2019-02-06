@@ -5,6 +5,7 @@ import com.service.dto.GroupDTO;
 
 import org.mapstruct.*;
 
+
 /**
  * Mapper for the entity Group and its DTO GroupDTO.
  */
