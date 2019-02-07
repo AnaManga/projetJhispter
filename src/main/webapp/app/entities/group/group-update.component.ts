@@ -41,6 +41,7 @@ export class GroupUpdateComponent implements OnInit {
         this.authorities = [];
         this.groupService.authorities().subscribe(authorities => {
             this.authorities = authorities;
+            console.log(this.authorities);
         });
     }
 

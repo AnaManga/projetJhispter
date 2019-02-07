@@ -12,9 +12,5 @@ import java.util.List;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
-    /*
-    @Query("select jhi_group from Group jhi_group where jhi_group.users_group.login = ?#{principal.username}")
-    List<Group> findByUsers_groupIsCurrentUser();
-    */
 
 }

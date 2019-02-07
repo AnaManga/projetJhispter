@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -20,14 +21,17 @@ public class GroupDTO implements Serializable {
     public GroupDTO(Group group) {
         this.id = group.getId();
         this.nom = group.getNom();
-        this.authorities = group.getAuthorities();
+        this.authorities = group.getAuthorities()
+            .stream()
+            .map(Authority::getName)
+            .collect(Collectors.toSet());
     }
 
     private Long id;
 
     @NotNull
     private String nom;
-    private Set<Authority> authorities;
+    private Set<String> authorities ;
 
     public Long getId() {
         return id;
@@ -45,11 +49,11 @@ public class GroupDTO implements Serializable {
         this.nom = nom;
     }
 
-    public Set<Authority> getAuthorities() {
+    public Set<String> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
+    public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
     }
 
