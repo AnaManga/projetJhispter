@@ -18,15 +18,6 @@ public class GroupDTO implements Serializable {
     public GroupDTO() {
     }
 
-    public GroupDTO(Group group) {
-        this.id = group.getId();
-        this.nom = group.getNom();
-        this.authorities = group.getAuthorities()
-            .stream()
-            .map(Authority::getName)
-            .collect(Collectors.toSet());
-    }
-
     private Long id;
 
     @NotNull

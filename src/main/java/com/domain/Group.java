@@ -1,5 +1,6 @@
 package com.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Group implements Serializable {
     @Column(name = "nom", nullable = false)
     private String nom;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name= "jhi_group_authority",
