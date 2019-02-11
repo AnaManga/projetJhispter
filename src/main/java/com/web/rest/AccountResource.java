@@ -8,6 +8,7 @@ import com.security.SecurityUtils;
 import com.service.MailService;
 import com.service.UserService;
 import com.service.dto.PasswordChangeDTO;
+import com.service.dto.UserAuthoritiesDTO;
 import com.service.dto.UserDTO;
 import com.web.rest.errors.*;
 import com.web.rest.vm.KeyAndPasswordVM;
@@ -100,9 +101,9 @@ public class AccountResource {
      */
     @GetMapping("/account")
     @Timed
-    public UserDTO getAccount() {
+    public UserAuthoritiesDTO getAccount() {
         return userService.getUserWithAuthorities()
-            .map(UserDTO::new)
+            .map(UserAuthoritiesDTO::new)
             .orElseThrow(() -> new InternalServerErrorException("User could not be found"));
     }
 

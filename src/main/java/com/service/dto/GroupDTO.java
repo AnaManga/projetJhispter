@@ -1,13 +1,9 @@
 package com.service.dto;
 
-import com.domain.Authority;
-import com.domain.Group;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
