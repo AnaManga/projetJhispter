@@ -5,6 +5,8 @@ import com.domain.Authority;
 import com.domain.Group;
 import com.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -49,10 +51,12 @@ public class UserAuthoritiesDTO {
 
     private Set<String> authorities;
 
+    @Autowired
     public UserAuthoritiesDTO() {
         // Empty constructor needed for Jackson.
     }
 
+    @Autowired
     public UserAuthoritiesDTO(User user) {
 
         this.id = user.getId();
@@ -180,7 +184,7 @@ public class UserAuthoritiesDTO {
     }
 
     public void setAuthorities(Set<String> authorities) {
-        authorities = authorities;
+        this.authorities = authorities;
     }
 
     @Override

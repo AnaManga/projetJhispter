@@ -5,17 +5,19 @@ import com.domain.Authority;
 import com.domain.Group;
 import com.domain.User;
 import com.repository.AuthorityRepository;
-import com.repository.GroupRepository;
 import com.repository.UserRepository;
 import com.repository.search.UserSearchRepository;
 import com.security.AuthoritiesConstants;
 import com.security.SecurityUtils;
+import com.service.dto.UserAuthoritiesDTO;
 import com.service.dto.UserDTO;
+import com.service.mapper.UserAuthoritiesMapper;
 import com.service.util.RandomUtil;
 import com.web.rest.errors.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,8 +42,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final GroupRepository groupRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     private final UserSearchRepository userSearchRepository;
@@ -50,13 +50,19 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, GroupRepository groupRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    @Autowired
+    private final UserAuthoritiesDTO userAuthoritiesDTO;
+
+    private final UserAuthoritiesMapper userAuthoritiesMapper;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager, UserAuthoritiesDTO userAuthoritiesDTO, UserAuthoritiesMapper userAuthoritiesMapper) {
         this.userRepository = userRepository;
-        this.groupRepository = groupRepository;
         this.passwordEncoder = passwordEncoder;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userAuthoritiesDTO = userAuthoritiesDTO;
+        this.userAuthoritiesMapper = userAuthoritiesMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -282,7 +288,9 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin)
+         .map(user ->
+             userAuthoritiesMapper.userAuthoritiesDTOToUser(userAuthoritiesDTO));
     }
 
     /**
