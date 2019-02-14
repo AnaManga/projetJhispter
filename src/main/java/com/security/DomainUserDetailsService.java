@@ -1,5 +1,6 @@
 package com.security;
 
+import com.domain.Group;
 import com.domain.User;
 import com.repository.UserRepository;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
@@ -55,6 +56,12 @@ public class DomainUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
             .map(authority -> new SimpleGrantedAuthority(authority.getName()))
             .collect(Collectors.toList());
+
+       Group group = user.getGroups();
+        List<GrantedAuthority> authOfGroup = group.getAuthorities().stream()
+            .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+            .collect(Collectors.toList());
+        grantedAuthorities.addAll(authOfGroup);
         return new org.springframework.security.core.userdetails.User(user.getLogin(),
             user.getPassword(),
             grantedAuthorities);

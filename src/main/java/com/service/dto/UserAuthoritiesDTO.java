@@ -72,11 +72,12 @@ public class UserAuthoritiesDTO {
             .map(Authority::getName)
             .collect(Collectors.toSet());
 
-        Group groupOfUser = user.getGroups();
-        Set<String> authOfGroup = groupOfUser.getAuthorities().stream()
+        Group group =user.getGroups();
+        Set<String> authOfGroup= group.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
         this.authorities.addAll(authOfGroup);
+
     }
 
     public Long getId() {

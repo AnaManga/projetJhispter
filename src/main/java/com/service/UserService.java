@@ -10,6 +10,10 @@ import com.repository.UserRepository;
 import com.repository.search.UserSearchRepository;
 import com.security.AuthoritiesConstants;
 import com.security.SecurityUtils;
+
+import com.service.dto.GroupDTO;
+import com.service.dto.UserAuthoritiesDTO;
+
 import com.service.dto.UserDTO;
 import com.service.util.RandomUtil;
 import com.web.rest.errors.*;
@@ -27,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -282,7 +287,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+
+        Optional <User> currentUser = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        currentUser.map(user -> new UserAuthoritiesDTO());
+        return currentUser;
     }
 
     /**

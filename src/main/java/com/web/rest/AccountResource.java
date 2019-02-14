@@ -101,6 +101,8 @@ public class AccountResource {
      */
     @GetMapping("/account")
     @Timed
+    // regarder ce que renvoie le userService.getUserWithAuthorities(). Faire en sorte de renvoyer un userAuthorDTO à la place
+
     public UserAuthoritiesDTO getAccount() {
         return userService.getUserWithAuthorities()
             .map(UserAuthoritiesDTO::new)
