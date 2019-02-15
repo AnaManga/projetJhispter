@@ -287,10 +287,11 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
-
-        Optional <User> currentUser = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
-        currentUser.map(user -> new UserAuthoritiesDTO());
-        return currentUser;
+        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin).map(user -> {
+            user.getAuthorities()
+                .addAll(user.getGroups().getAuthorities());
+            return user;
+        });
     }
 
     /**
